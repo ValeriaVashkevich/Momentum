@@ -5,7 +5,9 @@ const timeOfDay = getTimeOfDay();
 const greetingText = `Good ${timeOfDay},`;
 const input = document.querySelector(".name");
 input.placeholder = "[Enter name]";
+const body = document.body;
 
+// Time:
 function showTime() {
   const onlyTime = new Date().toLocaleTimeString();
   time.textContent = onlyTime;
@@ -16,6 +18,7 @@ function showTime() {
 
 showTime();
 
+// Date:
 function showDate() {
   const options = { weekday: "long", month: "long", day: "numeric" };
   const onlytDate = new Date().toLocaleDateString("en-US", options);
@@ -23,7 +26,7 @@ function showDate() {
 }
 
 function getTimeOfDay() {
-  const timeOfDayArray = ["Night", "Morning", "Day", "Evening"];
+  const timeOfDayArray = ["Night", "Morning", "Afternoon", "Evening"];
   const hours = new Date().getHours();
   const remainder = Math.trunc(hours / 6);
   if (remainder === 0) {
@@ -40,10 +43,12 @@ function getTimeOfDay() {
   }
 }
 
+// Greeting:
 function showGreeting() {
   greeting.textContent = greetingText;
 }
 
+// Local storage:
 function setLocalStorage() {
   localStorage.setItem("name", input.value);
 }
@@ -55,3 +60,24 @@ function getLocalStorage() {
   }
 }
 window.addEventListener("load", getLocalStorage);
+
+// Body image:
+function getRandomNum(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function setBg() {
+  let timeOfDay =  getTimeOfDay();
+  let randomNum = getRandomNum(1, 20);
+  let bgNum = null;
+  const randomNumLength = 2;
+  if (randomNum < 10) {
+    bgNum = randomNum.toString().padStart(randomNumLength, "0");
+  } else bgNum = randomNum;
+  let bgUrl = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay.toLocaleLowerCase()}/${bgNum}.jpg`
+  body.style.backgroundImage = `url('${bgUrl}')`;
+}
+
+setBg()
