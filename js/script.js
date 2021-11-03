@@ -9,6 +9,11 @@ const body = document.body;
 let randomNum;
 const slideNext = document.querySelector(".slide-next");
 const slidePrev = document.querySelector(".slide-prev");
+const weatherIcon = document.querySelector('.weather-icon');
+const temperature = document.querySelector('.temperature');
+const weatherDescription = document.querySelector('.weather-description');
+const windSpeed = document.querySelector('.wind');
+const humidity = document.querySelector('.humidity');
 
 // Time:
 function showTime() {
@@ -16,6 +21,7 @@ function showTime() {
   time.textContent = onlyTime;
   showDate();
   showGreeting();
+  getWeather();
   setTimeout(showTime, 1000);
 }
 
@@ -116,3 +122,17 @@ function getSlidePrev() {
 
 slideNext.addEventListener("click", getSlideNext);
 slidePrev.addEventListener("click", getSlidePrev);
+
+//Weather:
+async function getWeather() {
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=Minsk&lang=en&appid=f072b5b73cc9205bc2745a4764d2c01e&units=metric`
+  const res = await fetch(url);
+  const data = await res.json();
+  weatherIcon.classList.add(`owf-${data.weather[0].id}`);
+  temperature.textContent = `${data.main.temp}°C`;
+  weatherDescription.textContent = data.weather[0].description;
+  windSpeed.textContent = `Wind speed: ${data.wind.speed}m/s`
+  humidity.textContent = `Humidity: ${data.main.humidity}%`
+}
+
+
