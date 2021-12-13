@@ -140,3 +140,12 @@ async function getWeather() {
 
 //Weather for definite city:
 city.addEventListener("change", getWeather);
+
+// Quote:
+async function getQuotes() {  
+  const quotes = 'data.json';
+  const res = await fetch(quotes);
+  const data = await res.json(); 
+  console.log(data);
+}
+getQuotes();
