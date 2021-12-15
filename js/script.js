@@ -16,6 +16,9 @@ const windSpeed = document.querySelector(".wind");
 const humidity = document.querySelector(".humidity");
 const city = document.querySelector(".city");
 city.value = "Minsk";
+const quote = document.querySelector(".quote");
+const author = document.querySelector(".author");
+const changeQuote = document.querySelector(".change-quote")
 
 // Time:
 function showTime() {
@@ -142,10 +145,21 @@ async function getWeather() {
 city.addEventListener("change", getWeather);
 
 // Quote:
-async function getQuotes() {  
-  const quotes = 'data.json';
+function getRandomQuote(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  randomQuote = Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+async function getQuotes() {
+  const quotes = "https://www.breakingbadapi.com/api/quotes";
   const res = await fetch(quotes);
-  const data = await res.json(); 
-  console.log(data);
+  const data = await res.json();
+  getRandomQuote(0, 69);
+  const authorOfQuote = randomQuote;
+  quote.textContent = `"${data[randomQuote].quote}"`;
+  author.textContent = data[authorOfQuote].author;
 }
 getQuotes();
+
+changeQuote.onmouseup = (getQuotes) 
