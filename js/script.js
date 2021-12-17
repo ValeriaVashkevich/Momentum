@@ -18,7 +18,7 @@ const city = document.querySelector(".city");
 city.value = "Minsk";
 const quote = document.querySelector(".quote");
 const author = document.querySelector(".author");
-const changeQuote = document.querySelector(".change-quote")
+const changeQuote = document.querySelector(".change-quote");
 
 // Time:
 function showTime() {
@@ -162,4 +162,4 @@ async function getQuotes() {
 }
 getQuotes();
 
-changeQuote.onmouseup = (getQuotes) 
+changeQuote.onmouseup = getQuotes;
