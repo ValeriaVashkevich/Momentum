@@ -19,6 +19,9 @@ city.value = "Minsk";
 const quote = document.querySelector(".quote");
 const author = document.querySelector(".author");
 const changeQuote = document.querySelector(".change-quote");
+const playPlayer = document.querySelector(".play");
+// const stopPlayer = document.querySelector(".pause");
+let isPlay = false;
 
 // Time:
 function showTime() {
@@ -163,3 +166,33 @@ async function getQuotes() {
 getQuotes();
 
 changeQuote.onmouseup = getQuotes;
+
+// Audio player:
+
+const audio = new Audio();
+
+function playAudio() {
+  audio.src = "./assets/sounds/Aqua_Caelestis.mp3";
+  audio.currentTime = 0;
+  audio.play();
+}
+
+console.log(isPlay);
+playPlayer.onclick = () => {
+  playPlayer.classList.toggle("pause");
+  if (isPlay) {
+    isPlay = true;
+    playAudio();
+    console.log(isPlay);
+  }
+
+  if (!isPlay) {
+    audio.pause();
+    isPlay = false;
+    console.log(isPlay);
+  }
+};
+
+// stopPlayer.onclick = () => {
+//   console.log(isPlay);
+// };
