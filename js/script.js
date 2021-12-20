@@ -20,7 +20,6 @@ const quote = document.querySelector(".quote");
 const author = document.querySelector(".author");
 const changeQuote = document.querySelector(".change-quote");
 const playPlayer = document.querySelector(".play");
-// const stopPlayer = document.querySelector(".pause");
 let isPlay = false;
 
 // Time:
@@ -174,25 +173,20 @@ const audio = new Audio();
 function playAudio() {
   audio.src = "./assets/sounds/Aqua_Caelestis.mp3";
   audio.currentTime = 0;
-  audio.play();
+  if (!isPlay) {
+    audio.play();
+  }
+  if (isPlay) {
+    audio.pause();
+  }
 }
 
-console.log(isPlay);
 playPlayer.onclick = () => {
   playPlayer.classList.toggle("pause");
-  if (isPlay) {
-    isPlay = true;
-    playAudio();
-    console.log(isPlay);
-  }
-
+  playAudio();
   if (!isPlay) {
-    audio.pause();
+    isPlay = true;
+  } else {
     isPlay = false;
-    console.log(isPlay);
   }
 };
-
-// stopPlayer.onclick = () => {
-//   console.log(isPlay);
-// };
