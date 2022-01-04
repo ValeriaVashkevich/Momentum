@@ -20,7 +20,12 @@ const quote = document.querySelector(".quote");
 const author = document.querySelector(".author");
 const changeQuote = document.querySelector(".change-quote");
 const playPlayer = document.querySelector(".play");
+const playPrevPlayer = document.querySelector(".play-prev");
+const playNextPlayer = document.querySelector(".play-next");
 let isPlay = false;
+let playNum = 0;
+let isNextButton = false;
+let isPrevButton = false;
 
 // Time:
 function showTime() {
@@ -168,25 +173,80 @@ changeQuote.onmouseup = getQuotes;
 
 // Audio player:
 
+const playList = [
+  {
+    title: "Aqua Caelestis",
+    src: "./assets/sounds/Aqua_Caelestis.mp3",
+    duration: "00:58",
+  },
+  {
+    title: "River Flows In You",
+    src: "./assets/sounds/River_Flows_In_You.mp3",
+    duration: "03:50",
+  },
+  {
+    title: "Ennio Morricone",
+    src: "./assets/sounds/Ennio_Morricone.mp3",
+    duration: "03:50",
+  },
+  {
+    title: "Summer Wind.mp3",
+    src: "./assets/sounds/Summer_Wind.mp3",
+    duration: "03:50",
+  },
+];
+
 const audio = new Audio();
 
 function playAudio() {
-  audio.src = "./assets/sounds/Aqua_Caelestis.mp3";
+  audio.src = playList[playNum].src;
   audio.currentTime = 0;
   if (!isPlay) {
     audio.play();
+    playPlayer.classList.add("pause");
   }
   if (isPlay) {
-    audio.pause();
+    if (!isNextButton & !isPrevButton) {
+      audio.pause();
+      playPlayer.classList.remove("pause");
+    }
+    if (isNextButton || isPrevButton) {
+      audio.play();
+    }
   }
 }
 
 playPlayer.onclick = () => {
-  playPlayer.classList.toggle("pause");
+  isNextButton = false;
+  isPrevButton = false;
   playAudio();
   if (!isPlay) {
     isPlay = true;
   } else {
     isPlay = false;
+  }
+};
+
+playNextPlayer.onclick = () => {
+  isNextButton = true;
+  isPrevButton = false;
+  playNum = playNum + 1;
+  if (!isPlay) {
+    playAudio();
+    isPlay = true;
+  } else {
+    playAudio();
+  }
+};
+
+playPrevPlayer.onclick = () => {
+  isPrevButton = true;
+  isNextButton = false;
+  playNum = playNum - 1;
+  if (!isPlay) {
+    playAudio();
+    isPlay = true;
+  } else {
+    playAudio();
   }
 };
