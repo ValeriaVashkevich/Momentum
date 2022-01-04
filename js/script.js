@@ -26,6 +26,7 @@ let isPlay = false;
 let playNum = 0;
 let isNextButton = false;
 let isPrevButton = false;
+const playListContainer = document.querySelector(".play-list");
 
 // Time:
 function showTime() {
@@ -190,7 +191,7 @@ const playList = [
     duration: "03:50",
   },
   {
-    title: "Summer Wind.mp3",
+    title: "Summer Wind",
     src: "./assets/sounds/Summer_Wind.mp3",
     duration: "03:50",
   },
@@ -259,3 +260,12 @@ playPrevPlayer.onclick = () => {
     playAudio();
   }
 };
+
+// Audio PlayList:
+
+playList.forEach((el) => {
+  const playItem = document.createElement("li");
+  playItem.classList.add("play-item");
+  playItem.textContent = `${el.title}`;
+  playListContainer.append(playItem);
+});
