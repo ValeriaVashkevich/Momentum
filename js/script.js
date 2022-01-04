@@ -230,7 +230,12 @@ playPlayer.onclick = () => {
 playNextPlayer.onclick = () => {
   isNextButton = true;
   isPrevButton = false;
-  playNum = playNum + 1;
+  if (playNum < playList.length - 1) {
+    playNum = playNum + 1;
+  } else {
+    playNum = 0;
+  }
+
   if (!isPlay) {
     playAudio();
     isPlay = true;
@@ -242,7 +247,11 @@ playNextPlayer.onclick = () => {
 playPrevPlayer.onclick = () => {
   isPrevButton = true;
   isNextButton = false;
-  playNum = playNum - 1;
+  if (playNum > 0) {
+    playNum = playNum - 1;
+  } else {
+    playNum = playList.length - 1;
+  }
   if (!isPlay) {
     playAudio();
     isPlay = true;
