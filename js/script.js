@@ -27,6 +27,7 @@ let playNum = 0;
 let isNextButton = false;
 let isPrevButton = false;
 const playListContainer = document.querySelector(".play-list");
+const itemActive = document.getElementsByTagName("li");
 
 // Time:
 function showTime() {
@@ -202,6 +203,23 @@ const audio = new Audio();
 function playAudio() {
   audio.src = playList[playNum].src;
   audio.currentTime = 0;
+  audio.addEventListener("ended", function () {
+    isPlay = false;
+    if (playNum < playList.length - 1) {
+      playNum = playNum + 1;
+      itemActive[playNum].classList.add("item-active");
+      itemActive[playNum - 1].classList.remove("item-active");
+      playAudio();
+      isPlay = true;
+      console.log(playNum);
+    } else {
+      playNum = 0;
+      itemActive[playNum].classList.add("item-active");
+      itemActive[playList.length - 1].classList.remove("item-active");
+      playAudio();
+      isPlay = true;
+    }
+  });
   if (!isPlay) {
     audio.play();
     playPlayer.classList.add("pause");
@@ -215,11 +233,15 @@ function playAudio() {
       audio.play();
     }
   }
+  // audio.onloadeddata = function () {
+  //   console.log(audio.duration);
+  // };
 }
 
 playPlayer.onclick = () => {
   isNextButton = false;
   isPrevButton = false;
+  itemActive[playNum].classList.add("item-active");
   playAudio();
   if (!isPlay) {
     isPlay = true;
@@ -233,8 +255,12 @@ playNextPlayer.onclick = () => {
   isPrevButton = false;
   if (playNum < playList.length - 1) {
     playNum = playNum + 1;
+    itemActive[playNum].classList.add("item-active");
+    itemActive[playNum - 1].classList.remove("item-active");
   } else {
     playNum = 0;
+    itemActive[playNum].classList.add("item-active");
+    itemActive[playList.length - 1].classList.remove("item-active");
   }
 
   if (!isPlay) {
@@ -250,8 +276,12 @@ playPrevPlayer.onclick = () => {
   isNextButton = false;
   if (playNum > 0) {
     playNum = playNum - 1;
+    itemActive[playNum].classList.add("item-active");
+    itemActive[playNum + 1].classList.remove("item-active");
   } else {
     playNum = playList.length - 1;
+    itemActive[playNum].classList.add("item-active");
+    itemActive[0].classList.remove("item-active");
   }
   if (!isPlay) {
     playAudio();
