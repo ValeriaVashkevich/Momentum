@@ -179,22 +179,22 @@ const playList = [
   {
     title: "Aqua Caelestis",
     src: "./assets/sounds/Aqua_Caelestis.mp3",
-    duration: "00:58",
+    duration: "00:39",
   },
   {
     title: "River Flows In You",
     src: "./assets/sounds/River_Flows_In_You.mp3",
-    duration: "03:50",
+    duration: "01:37",
   },
   {
     title: "Ennio Morricone",
     src: "./assets/sounds/Ennio_Morricone.mp3",
-    duration: "03:50",
+    duration: "01:37",
   },
   {
     title: "Summer Wind",
     src: "./assets/sounds/Summer_Wind.mp3",
-    duration: "03:50",
+    duration: "01:50",
   },
 ];
 
@@ -203,23 +203,6 @@ const audio = new Audio();
 function playAudio() {
   audio.src = playList[playNum].src;
   audio.currentTime = 0;
-  audio.addEventListener("ended", function () {
-    isPlay = false;
-    if (playNum < playList.length - 1) {
-      playNum = playNum + 1;
-      itemActive[playNum].classList.add("item-active");
-      itemActive[playNum - 1].classList.remove("item-active");
-      playAudio();
-      isPlay = true;
-      console.log(playNum);
-    } else {
-      playNum = 0;
-      itemActive[playNum].classList.add("item-active");
-      itemActive[playList.length - 1].classList.remove("item-active");
-      playAudio();
-      isPlay = true;
-    }
-  });
   if (!isPlay) {
     audio.play();
     playPlayer.classList.add("pause");
@@ -233,10 +216,22 @@ function playAudio() {
       audio.play();
     }
   }
-  // audio.onloadeddata = function () {
-  //   console.log(audio.duration);
-  // };
 }
+
+audio.addEventListener("ended", function () {
+  isPlay = false;
+  if (playNum < playList.length - 1) {
+    playNum = playNum + 1;
+    itemActive[playNum].classList.add("item-active");
+    itemActive[playNum - 1].classList.remove("item-active");
+  } else {
+    playNum = 0;
+    itemActive[playNum].classList.add("item-active");
+    itemActive[playList.length - 1].classList.remove("item-active");
+  }
+  playAudio();
+  isPlay = true;
+});
 
 playPlayer.onclick = () => {
   isNextButton = false;
