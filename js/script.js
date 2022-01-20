@@ -1,8 +1,7 @@
+let isItRu = false;
 const time = document.querySelector(".time");
 const date = document.querySelector(".date");
 const greeting = document.querySelector(".greeting");
-const timeOfDay = getTimeOfDay();
-const greetingText = `Good ${timeOfDay},`;
 const input = document.querySelector(".name");
 input.placeholder = "[Enter name]";
 const body = document.body;
@@ -29,13 +28,31 @@ let isPrevButton = false;
 const playListContainer = document.querySelector(".play-list");
 const itemActive = document.getElementsByTagName("li");
 
+// Translation:
+document.onkeydown = (event) => {
+  if (event.shiftKey & event.altKey) {
+    if (!isItRu) {
+      isItRu = true;
+      city.value = "Mинск";
+      
+    } else {
+      isItRu = false;
+      city.value = "Minsk";
+    }
+  }
+  showGreeting();
+  console.log(city.value);
+  getWeather();
+};
+
+const greetingTranslation = { en: "Good", ru: "Доброго" };
+
 // Time:
 function showTime() {
   const onlyTime = new Date().toLocaleTimeString();
   time.textContent = onlyTime;
   showDate();
   showGreeting();
-  getWeather();
   setTimeout(showTime, 1000);
 }
 
@@ -49,26 +66,48 @@ function showDate() {
 }
 
 function getTimeOfDay() {
-  const timeOfDayArray = ["Night", "Morning", "Afternoon", "Evening"];
+  const timeOfDayArrayEn = ["Night", "Morning", "Afternoon", "Evening"];
+  const timeOfDayArrayRu = ["Ночи", "Утра", "Дня", "Вечера"];
   const hours = new Date().getHours();
   const remainder = Math.trunc(hours / 6);
   if (remainder === 0) {
-    return timeOfDayArray[0];
+    if (!isItRu) {
+      return timeOfDayArrayEn[0];
+    } else {
+      return timeOfDayArrayRu[0];
+    }
   }
   if (remainder === 1) {
-    return timeOfDayArray[1];
+    if (!isItRu) {
+      return timeOfDayArrayEn[1];
+    } else {
+      return timeOfDayArrayRu[1];
+    }
   }
   if (remainder === 2) {
-    return timeOfDayArray[2];
+    if (!isItRu) {
+      return timeOfDayArrayEn[2];
+    } else {
+      return timeOfDayArrayRu[2];
+    }
   }
   if (remainder === 3) {
-    return timeOfDayArray[3];
+    if (!isItRu) {
+      return timeOfDayArrayEn[3];
+    } else {
+      return timeOfDayArrayRu[3];
+    }
   }
 }
 
 // Greeting:
 function showGreeting() {
-  greeting.textContent = greetingText;
+  const timeOfDay = getTimeOfDay();
+  if (!isItRu) {
+    greeting.textContent = `${greetingTranslation.en} ${timeOfDay},`;
+  } else {
+    greeting.textContent = `${greetingTranslation.ru} ${timeOfDay},`;
+  }
 }
 
 // Local storage:
@@ -139,16 +178,29 @@ slidePrev.addEventListener("click", getSlidePrev);
 
 //Weather:
 async function getWeather() {
-  let url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=en&appid=f072b5b73cc9205bc2745a4764d2c01e&units=metric`;
+  let url;
+  if (!isItRu) {
+    url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=en&appid=f072b5b73cc9205bc2745a4764d2c01e&units=metric`;
+  } else {
+    url = `https://api.openweathermap.org/data/2.5/weather?q=Минск&lang=ru&appid=08f2a575dda978b9c539199e54df03b0&units=metric`;
+  }
   const res = await fetch(url);
   const data = await res.json();
   weatherIcon.className = "weather-icon owf";
   weatherIcon.classList.add(`owf-${data.weather[0].id}`);
   temperature.textContent = `${Math.trunc(data.main.temp)}°C`;
   weatherDescription.textContent = data.weather[0].description;
-  windSpeed.textContent = `Wind speed: ${Math.trunc(data.wind.speed)} m/s`;
-  humidity.textContent = `Humidity: ${data.main.humidity}%`;
+  if (!isItRu) {
+    windSpeed.textContent = `Wind speed: ${Math.trunc(data.wind.speed)} m/s`;
+    humidity.textContent = `Humidity: ${data.main.humidity}%`;
+  } else {
+    windSpeed.textContent = `Скорость ветра: ${Math.trunc(
+      data.wind.speed
+    )} m/s`;
+    humidity.textContent = `Влажность: ${data.main.humidity}%`;
+  }
 }
+getWeather();
 
 //Weather for definite city:
 city.addEventListener("change", getWeather);
@@ -174,7 +226,6 @@ getQuotes();
 changeQuote.onmouseup = getQuotes;
 
 // Audio player:
-
 const playList = [
   {
     title: "Aqua Caelestis",
@@ -287,7 +338,6 @@ playPrevPlayer.onclick = () => {
 };
 
 // Audio PlayList:
-
 playList.forEach((el) => {
   const playItem = document.createElement("li");
   playItem.classList.add("play-item");
