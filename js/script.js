@@ -34,15 +34,16 @@ document.onkeydown = (event) => {
     if (!isItRu) {
       isItRu = true;
       city.value = "Mинск";
-      
+      input.placeholder = "[Введите имя]";
     } else {
       isItRu = false;
       city.value = "Minsk";
+      input.placeholder = "[Enter name]";
     }
   }
   showGreeting();
-  console.log(city.value);
   getWeather();
+  showDate();
 };
 
 const greetingTranslation = { en: "Good", ru: "Доброго" };
@@ -60,8 +61,15 @@ showTime();
 
 // Date:
 function showDate() {
-  const options = { weekday: "long", month: "long", day: "numeric" };
-  const onlytDate = new Date().toLocaleDateString("en-US", options);
+  let options;
+  let onlytDate;
+  if (!isItRu) {
+    options = { weekday: "long", month: "long", day: "numeric" };
+    onlytDate = new Date().toLocaleDateString("en-US", options);
+  } else {
+    options = { weekday: "long", day: "numeric", month: "long" };
+    onlytDate = new Date().toLocaleDateString("ru-RU", options);
+  }
   date.textContent = onlytDate;
 }
 
