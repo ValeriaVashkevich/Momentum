@@ -108,6 +108,24 @@ function getTimeOfDay() {
   }
 }
 
+function getTimeOfDayForBackImg() {
+  const timeOfDayArray = ["Night", "Morning", "Afternoon", "Evening"];
+  const hours = new Date().getHours();
+  const remainder = Math.trunc(hours / 6);
+  if (remainder === 0) {
+    return timeOfDayArray[0];
+  }
+  if (remainder === 1) {
+    return timeOfDayArray[1];
+  }
+  if (remainder === 2) {
+    return timeOfDayArray[2];
+  }
+  if (remainder === 3) {
+    return timeOfDayArray[3];
+  }
+}
+
 // Greeting:
 function showGreeting() {
   const timeOfDay = getTimeOfDay();
@@ -140,7 +158,7 @@ function getRandomNum(min, max) {
 getRandomNum(1, 20);
 
 function setBg() {
-  let timeOfDay = getTimeOfDay();
+  let timeOfDay = getTimeOfDayForBackImg();
   let bgNum = null;
   const randomNumLength = 2;
   if (randomNum < 10) {
