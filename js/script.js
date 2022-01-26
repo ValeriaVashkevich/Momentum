@@ -1,12 +1,4 @@
-// let isItRu = false;
-let isItRu = localStorage.getItem("langRu");
-console.log(isItRu);
-if(isItRu === "true") {
-  isItRu = true
-} else {
-  isItRu = false
-}
-console.log(isItRu);
+let isItRu = localStorage.getItem("langRu") === "true" ? true : false;
 const time = document.querySelector(".time");
 const date = document.querySelector(".date");
 const greeting = document.querySelector(".greeting");
@@ -54,6 +46,41 @@ document.onkeydown = (event) => {
   showDate();
   saveLang();
 };
+
+// Local storage:
+function setLocalStorage() {
+  localStorage.setItem("name", input.value);
+}
+window.addEventListener("beforeunload", setLocalStorage);
+
+function getLocalStorage() {
+  if (localStorage.getItem("name")) {
+    input.value = localStorage.getItem("name");
+  }
+}
+window.addEventListener("load", getLocalStorage);
+
+function saveLang() {
+  localStorage.setItem("langRu", isItRu);
+}
+
+function getLang() {
+  if (localStorage.getItem("langRu")) {
+    isItRu = localStorage.getItem("langRu") === "true" ? true : false;
+    showGreeting();
+    getWeather();
+    showDate();
+    if (isItRu) {
+      city.value = "Mинск";
+      input.placeholder = "[Введите имя]";
+    } else {
+      city.value = "Minsk";
+      input.placeholder = "[Enter name]";
+    }
+  }
+}
+
+window.addEventListener("load", getLang);
 
 const greetingTranslation = { en: "Good", ru: "Доброго" };
 
@@ -144,45 +171,6 @@ function showGreeting() {
     greeting.textContent = `${greetingTranslation.ru} ${timeOfDay},`;
   }
 }
-
-// Local storage:
-function setLocalStorage() {
-  localStorage.setItem("name", input.value);
-}
-window.addEventListener("beforeunload", setLocalStorage);
-
-function getLocalStorage() {
-  if (localStorage.getItem("name")) {
-    input.value = localStorage.getItem("name");
-  }
-}
-window.addEventListener("load", getLocalStorage);
-
-//  ////////////////////////////////////////
-
-function saveLang() {
-  localStorage.setItem("langRu", isItRu);
-  // localStorage.removeItem('langRu'); // to back
-}
-window.addEventListener("load", saveLang);
-
-function getLang() {
-  if (localStorage.getItem("langRu")) {
-    isItRu = localStorage.getItem("langRu");
-    showGreeting();
-    getWeather();
-    showDate();
-    if (isItRu) {
-      city.value = "Mинск";
-      input.placeholder = "[Введите имя]";
-    } else {
-      city.value = "Minsk";
-      input.placeholder = "[Enter name]";
-    }
-  }
-}
-
-window.addEventListener("load", getLang);
 
 // Body image:
 function getRandomNum(min, max) {
