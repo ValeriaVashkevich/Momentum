@@ -1,3 +1,4 @@
+// let isItRu = false;
 let isItRu = localStorage.getItem("langRu");
 console.log(isItRu);
 if(isItRu === "true") {
