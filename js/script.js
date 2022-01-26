@@ -1,4 +1,11 @@
-let isItRu = false;
+let isItRu = localStorage.getItem("langRu");
+console.log(isItRu);
+if(isItRu === "true") {
+  isItRu = true
+} else {
+  isItRu = false
+}
+console.log(isItRu);
 const time = document.querySelector(".time");
 const date = document.querySelector(".date");
 const greeting = document.querySelector(".greeting");
@@ -44,6 +51,7 @@ document.onkeydown = (event) => {
   showGreeting();
   getWeather();
   showDate();
+  saveLang();
 };
 
 const greetingTranslation = { en: "Good", ru: "Доброго" };
@@ -148,6 +156,32 @@ function getLocalStorage() {
   }
 }
 window.addEventListener("load", getLocalStorage);
+
+//  ////////////////////////////////////////
+
+function saveLang() {
+  localStorage.setItem("langRu", isItRu);
+  // localStorage.removeItem('langRu'); // to back
+}
+window.addEventListener("load", saveLang);
+
+function getLang() {
+  if (localStorage.getItem("langRu")) {
+    isItRu = localStorage.getItem("langRu");
+    showGreeting();
+    getWeather();
+    showDate();
+    if (isItRu) {
+      city.value = "Mинск";
+      input.placeholder = "[Введите имя]";
+    } else {
+      city.value = "Minsk";
+      input.placeholder = "[Enter name]";
+    }
+  }
+}
+
+window.addEventListener("load", getLang);
 
 // Body image:
 function getRandomNum(min, max) {
