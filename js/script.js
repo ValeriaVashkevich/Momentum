@@ -145,7 +145,7 @@ function getTimeOfDay() {
 }
 
 function getTimeOfDayForBackImg() {
-  const timeOfDayArray = ["Night", "Morning", "Afternoon", "Evening"];
+  const timeOfDayArray = ["night", "morning", "afternoon", "evening"];
   const hours = new Date().getHours();
   const remainder = Math.trunc(hours / 6);
   if (remainder === 0) {
@@ -180,20 +180,38 @@ function getRandomNum(min, max) {
 }
 getRandomNum(1, 20);
 
-function setBg() {
-  let timeOfDay = getTimeOfDayForBackImg();
-  let bgNum = null;
-  const randomNumLength = 2;
-  if (randomNum < 10) {
-    bgNum = randomNum.toString().padStart(randomNumLength, "0");
-  } else bgNum = randomNum;
+async function getLinkToImage() {
+  let timeOfDayForBackImg = getTimeOfDayForBackImg();
+  let url = `https://api.unsplash.com/photos/random?query=${timeOfDayForBackImg}&client_id=_XWXHCzSVRQbGYNwAvKReu6r_3nVJNnUsUMMcQ28Ei0`;
+  const res = await fetch(url);
+  const data = await res.json();
+  const result = await data.urls.regular;
+  return result;
+}
 
+async function setBg() {
   const img = new Image();
-  img.src = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay.toLocaleLowerCase()}/${bgNum}.jpg`;
+  img.src = await getLinkToImage();
+
   img.onload = () => {
     body.style.backgroundImage = `url('${img.src}')`;
   };
 }
+
+// function setBg() {
+//   let timeOfDay = getTimeOfDayForBackImg();
+//   let bgNum = null;
+//   const randomNumLength = 2;
+//   if (randomNum < 10) {
+//     bgNum = randomNum.toString().padStart(randomNumLength, "0");
+//   } else bgNum = randomNum;
+
+//   const img = new Image();
+//   img.src = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay.toLocaleLowerCase()}/${bgNum}.jpg`;
+//   img.onload = () => {
+//     body.style.backgroundImage = `url('${img.src}')`;
+//   };
+// }
 
 setBg();
 
